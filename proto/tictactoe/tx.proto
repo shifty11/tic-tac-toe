@@ -1,0 +1,13 @@
+syntax = "proto3";
+package shifty11.tictactoe.tictactoe;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+// this line is used by starport scaffolding # proto/tx/message
