@@ -25,12 +25,21 @@ export interface RpcStatus {
  */
 export type TictactoeParams = object;
 
+export interface TictactoeQueryGetSystemInfoResponse {
+  SystemInfo?: TictactoeSystemInfo;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
 export interface TictactoeQueryParamsResponse {
   /** Params defines the parameters for the module. */
   params?: TictactoeParams;
+}
+
+export interface TictactoeSystemInfo {
+  /** @format uint64 */
+  nextGameId?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -240,6 +249,22 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryParams = (params: RequestParams = {}) =>
     this.request<TictactoeQueryParamsResponse, RpcStatus>({
       path: `/shifty11/tic-tac-toe/tictactoe/params`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySystemInfo
+   * @summary Queries a SystemInfo by index.
+   * @request GET:/shifty11/tic-tac-toe/tictactoe/system_info
+   */
+  querySystemInfo = (params: RequestParams = {}) =>
+    this.request<TictactoeQueryGetSystemInfoResponse, RpcStatus>({
+      path: `/shifty11/tic-tac-toe/tictactoe/system_info`,
       method: "GET",
       format: "json",
       ...params,

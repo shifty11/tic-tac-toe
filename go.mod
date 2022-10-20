@@ -1,6 +1,6 @@
 module github.com/shifty11/tic-tac-toe
 
-go 1.18
+go 1.19
 
 require (
 	github.com/cosmos/cosmos-sdk v0.46.2

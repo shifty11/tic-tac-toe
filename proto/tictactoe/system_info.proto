@@ -1,0 +1,9 @@
+syntax = "proto3";
+package shifty11.tictactoe.tictactoe;
+
+option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
+
+message SystemInfo {
+  uint64 nextGameId = 1; 
+  
+}

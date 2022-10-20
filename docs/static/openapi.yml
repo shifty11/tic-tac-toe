@@ -45032,6 +45032,42 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /shifty11/tic-tac-toe/tictactoe/system_info:
+    get:
+      summary: Queries a SystemInfo by index.
+      operationId: Shifty11TictactoeTictactoeSystemInfo
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              SystemInfo:
+                type: object
+                properties:
+                  nextGameId:
+                    type: string
+                    format: uint64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
 definitions:
   cosmos.auth.v1beta1.AddressBytesToStringResponse:
     type: object
@@ -75019,6 +75055,15 @@ definitions:
   shifty11.tictactoe.tictactoe.Params:
     type: object
     description: Params defines the parameters for the module.
+  shifty11.tictactoe.tictactoe.QueryGetSystemInfoResponse:
+    type: object
+    properties:
+      SystemInfo:
+        type: object
+        properties:
+          nextGameId:
+            type: string
+            format: uint64
   shifty11.tictactoe.tictactoe.QueryParamsResponse:
     type: object
     properties:
@@ -75026,3 +75071,9 @@ definitions:
         type: object
         description: Params defines the parameters for the module.
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  shifty11.tictactoe.tictactoe.SystemInfo:
+    type: object
+    properties:
+      nextGameId:
+        type: string
+        format: uint64
