@@ -4,6 +4,7 @@ package shifty11.tictactoe.tictactoe;
 import "gogoproto/gogo.proto";
 import "tictactoe/params.proto";
 import "tictactoe/system_info.proto";
+import "tictactoe/stored_game.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
@@ -12,5 +13,6 @@ option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   SystemInfo systemInfo = 2 [(gogoproto.nullable) = false];
+  repeated StoredGame storedGameList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

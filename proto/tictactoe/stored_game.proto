@@ -1,0 +1,26 @@
+syntax = "proto3";
+package shifty11.tictactoe.tictactoe;
+
+option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
+
+message StoredGame {
+  string index = 1; 
+  string player1 = 2; 
+  string player2 = 3; 
+  uint64 turn = 4;
+  enum GameStatus {
+    OPEN = 0;
+    IN_PROGRESS = 1;
+    FINISHED = 2;
+  }
+  GameStatus status = 5;
+  enum WinnerStatus {
+    NONE = 0;
+    PLAYER1 = 1;
+    PLAYER2 = 2;
+    DRAW = 3;
+  }
+  WinnerStatus winner = 6;
+  repeated uint64 board = 7;
+}
+
