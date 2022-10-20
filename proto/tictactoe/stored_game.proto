@@ -21,6 +21,6 @@ message StoredGame {
     DRAW = 3;
   }
   WinnerStatus winner = 6;
-  repeated uint64 board = 7;
+  string board = 7;
 }
 

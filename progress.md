@@ -20,11 +20,11 @@
   - [ ] Adjust game logic to my needs
 
 ### Actions
-- [ ] Create-Game
-  - [ ] Player invites other player
-  - [ ] Create new game with status `open`
-  - [ ] Errors: 
-    - [ ] Invalid player address
+- [x] Create-Game
+  - [x] Player invites other player
+  - [x] Create new game with status `open`
+  - [x] Errors: 
+    - [x] Invalid player address
 - [ ] Accept-Invite
   - [ ] Invited player accepts game invitation
   - [ ] Game status changes to `in-progress`
@@ -49,19 +49,19 @@
     - [ ] Invalid move
 
 ### Queries
-- [ ] List-Games
-  - [ ] Return all games
+- [x] List-Games
+  - [x] Return all games
   - [ ] Filter for game status
   - [ ] Filter for player
-- [ ] Show-Game
-  - [ ] Show info of single game
+- [x] Show-Game
+  - [x] Show info of single game
 
 ### Storage of information
-- [ ] Store information about all games in `SystemInfo`
+- [x] Store information about all games in `SystemInfo`
   ```go
   nextGameId uint32
   ```
-- [ ] Store game information in `StoredGame`
+- [x] Store game information in `StoredGame`
     ```go
     id uint32
     status GameStatus   // open, in-progress, ended

@@ -82,7 +82,7 @@ export interface TictactoeStoredGame {
   turn?: string;
   status?: StoredGameGameStatus;
   winner?: StoredGameWinnerStatus;
-  board?: string[];
+  board?: string;
 }
 
 export interface TictactoeSystemInfo {

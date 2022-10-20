@@ -11,7 +11,7 @@ export interface StoredGame {
   turn: number;
   status: StoredGame_GameStatus;
   winner: StoredGame_WinnerStatus;
-  board: number[];
+  board: string;
 }
 
 export enum StoredGame_GameStatus {
@@ -111,7 +111,7 @@ const baseStoredGame: object = {
   turn: 0,
   status: 0,
   winner: 0,
-  board: 0,
+  board: "",
 };
 
 export const StoredGame = {
@@ -134,11 +134,9 @@ export const StoredGame = {
     if (message.winner !== 0) {
       writer.uint32(48).int32(message.winner);
     }
-    writer.uint32(58).fork();
-    for (const v of message.board) {
-      writer.uint64(v);
+    if (message.board !== "") {
+      writer.uint32(58).string(message.board);
     }
-    writer.ldelim();
     return writer;
   },
 
@@ -146,7 +144,6 @@ export const StoredGame = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseStoredGame } as StoredGame;
-    message.board = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -169,14 +166,7 @@ export const StoredGame = {
           message.winner = reader.int32() as any;
           break;
         case 7:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
-            while (reader.pos < end2) {
-              message.board.push(longToNumber(reader.uint64() as Long));
-            }
-          } else {
-            message.board.push(longToNumber(reader.uint64() as Long));
-          }
+          message.board = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -188,7 +178,6 @@ export const StoredGame = {
 
   fromJSON(object: any): StoredGame {
     const message = { ...baseStoredGame } as StoredGame;
-    message.board = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = String(object.index);
     } else {
@@ -220,9 +209,9 @@ export const StoredGame = {
       message.winner = 0;
     }
     if (object.board !== undefined && object.board !== null) {
-      for (const e of object.board) {
-        message.board.push(Number(e));
-      }
+      message.board = String(object.board);
+    } else {
+      message.board = "";
     }
     return message;
   },
@@ -237,17 +226,12 @@ export const StoredGame = {
       (obj.status = storedGame_GameStatusToJSON(message.status));
     message.winner !== undefined &&
       (obj.winner = storedGame_WinnerStatusToJSON(message.winner));
-    if (message.board) {
-      obj.board = message.board.map((e) => e);
-    } else {
-      obj.board = [];
-    }
+    message.board !== undefined && (obj.board = message.board);
     return obj;
   },
 
   fromPartial(object: DeepPartial<StoredGame>): StoredGame {
     const message = { ...baseStoredGame } as StoredGame;
-    message.board = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {
@@ -279,9 +263,9 @@ export const StoredGame = {
       message.winner = 0;
     }
     if (object.board !== undefined && object.board !== null) {
-      for (const e of object.board) {
-        message.board.push(e);
-      }
+      message.board = object.board;
+    } else {
+      message.board = "";
     }
     return message;
   },

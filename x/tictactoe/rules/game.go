@@ -73,12 +73,12 @@ func (c *computerPlayer) getID() int {
 	return c.id
 }
 
-type board struct {
+type Board struct {
 	square    [][]Symbol
 	dimension int
 }
 
-func (b *board) printBoard() {
+func (b *Board) printBoard() {
 	for i := 0; i < b.dimension; i++ {
 		for j := 0; j < b.dimension; j++ {
 			if b.square[i][j] == Dot {
@@ -88,20 +88,19 @@ func (b *board) printBoard() {
 			} else {
 				fmt.Print("o")
 			}
-
 		}
 		fmt.Println("")
 	}
 }
 
 const (
-	ErrIndexOutOfRange    = "index input is greater than dimension of board"
+	ErrIndexOutOfRange    = "index input is greater than dimension of Board"
 	ErrInputAlreadyMarked = "input square already marked"
 	ErrInvalidSymbol      = "invalid symbol"
 	ErrNotPlayersTurn     = "not Players Turn"
 )
 
-func (b *board) markSymbol(i, j int, symbol Symbol) (bool, Symbol, error) {
+func (b *Board) markSymbol(i, j int, symbol Symbol) (bool, Symbol, error) {
 	if i > b.dimension || j > b.dimension {
 		return false, Dot, fmt.Errorf(ErrIndexOutOfRange)
 	}
@@ -117,7 +116,7 @@ func (b *board) markSymbol(i, j int, symbol Symbol) (bool, Symbol, error) {
 	return win, symbol, nil
 }
 
-func (b *board) checkWin(i, j int, symbol Symbol) bool {
+func (b *Board) checkWin(i, j int, symbol Symbol) bool {
 	//Check Row
 	rowMatch := true
 	for k := 0; k < b.dimension; k++ {
@@ -158,7 +157,7 @@ func (b *board) checkWin(i, j int, symbol Symbol) bool {
 }
 
 type Game struct {
-	board           *board
+	Board           *Board
 	firstPlayer     iPlayer
 	secondPlayer    iPlayer
 	firstPlayerTurn bool
@@ -166,9 +165,9 @@ type Game struct {
 	gameStatus      GameStatus
 }
 
-func initGame(b *board, p1, p2 iPlayer) *Game {
+func initGame(b *Board, p1, p2 iPlayer) *Game {
 	game := &Game{
-		board:           b,
+		Board:           b,
 		firstPlayer:     p1,
 		secondPlayer:    p2,
 		firstPlayerTurn: true,
@@ -186,7 +185,7 @@ func (g *Game) play() error {
 			if err != nil {
 				return err
 			}
-			win, symbol, err = g.board.markSymbol(x, y, g.firstPlayer.getSymbol())
+			win, symbol, err = g.Board.markSymbol(x, y, g.firstPlayer.getSymbol())
 			if err != nil {
 				return err
 			}
@@ -197,7 +196,7 @@ func (g *Game) play() error {
 			if err != nil {
 				return err
 			}
-			win, symbol, err = g.board.markSymbol(x, y, g.secondPlayer.getSymbol())
+			win, symbol, err = g.Board.markSymbol(x, y, g.secondPlayer.getSymbol())
 			if err != nil {
 				return err
 			}
@@ -224,7 +223,7 @@ func (g *Game) setGameStatus(win bool, symbol Symbol) {
 			return
 		}
 	}
-	if g.moveIndex == g.board.dimension*g.board.dimension {
+	if g.moveIndex == g.Board.dimension*g.Board.dimension {
 		g.gameStatus = GameDraw
 		return
 	}
@@ -240,7 +239,7 @@ func (g *Game) printMove(player iPlayer, x, y int) {
 		symbolString = "o"
 	}
 	fmt.Printf("Player %d Move with Symbol %s at Position X:%d Y:%d\n", player.getID(), symbolString, x, y)
-	g.board.printBoard()
+	g.Board.printBoard()
 	fmt.Println("")
 }
 
@@ -257,11 +256,11 @@ func (g *Game) printResult() {
 	default:
 		fmt.Println("Invalid Game Status")
 	}
-	g.board.printBoard()
+	g.Board.printBoard()
 }
 
 func NewGame() *Game {
-	board := &board{
+	board := &Board{
 		square:    [][]Symbol{{Dot, Dot, Dot}, {Dot, Dot, Dot}, {Dot, Dot, Dot}},
 		dimension: 3,
 	}
@@ -288,7 +287,7 @@ func (g *Game) PlayTurn(playerId int, x, y int) error {
 		if playerId != g.firstPlayer.getID() {
 			return fmt.Errorf(ErrNotPlayersTurn)
 		}
-		win, symbol, err = g.board.markSymbol(x, y, g.firstPlayer.getSymbol())
+		win, symbol, err = g.Board.markSymbol(x, y, g.firstPlayer.getSymbol())
 		if err != nil {
 			return err
 		}
@@ -298,7 +297,7 @@ func (g *Game) PlayTurn(playerId int, x, y int) error {
 		if playerId != g.secondPlayer.getID() {
 			return fmt.Errorf(ErrNotPlayersTurn)
 		}
-		win, symbol, err = g.board.markSymbol(x, y, g.secondPlayer.getSymbol())
+		win, symbol, err = g.Board.markSymbol(x, y, g.secondPlayer.getSymbol())
 		if err != nil {
 			return err
 		}
@@ -310,4 +309,27 @@ func (g *Game) PlayTurn(playerId int, x, y int) error {
 	g.setGameStatus(win, symbol)
 	g.printResult()
 	return nil
+}
+
+func (g *Game) Turn() int {
+	if g.firstPlayerTurn {
+		return 1
+	}
+	return 2
+}
+
+func (b *Board) String() string {
+	result := ""
+	for i := 0; i < b.dimension; i++ {
+		for j := 0; j < b.dimension; j++ {
+			if b.square[i][j] == Dot {
+				result = result + "."
+			} else if b.square[i][j] == Cross {
+				result = result + "*"
+			} else {
+				result = result + "o"
+			}
+		}
+	}
+	return result
 }

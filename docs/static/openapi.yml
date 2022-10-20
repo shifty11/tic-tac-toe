@@ -45072,10 +45072,7 @@ paths:
                         - DRAW
                       default: NONE
                     board:
-                      type: array
-                      items:
-                        type: string
-                        format: uint64
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -45219,10 +45216,7 @@ paths:
                       - DRAW
                     default: NONE
                   board:
-                    type: array
-                    items:
-                      type: string
-                      format: uint64
+                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -75309,10 +75303,7 @@ definitions:
                 - DRAW
               default: NONE
             board:
-              type: array
-              items:
-                type: string
-                format: uint64
+              type: string
       pagination:
         type: object
         properties:
@@ -75370,10 +75361,7 @@ definitions:
               - DRAW
             default: NONE
           board:
-            type: array
-            items:
-              type: string
-              format: uint64
+            type: string
   shifty11.tictactoe.tictactoe.QueryGetSystemInfoResponse:
     type: object
     properties:
@@ -75418,10 +75406,7 @@ definitions:
           - DRAW
         default: NONE
       board:
-        type: array
-        items:
-          type: string
-          format: uint64
+        type: string
   shifty11.tictactoe.tictactoe.StoredGame.GameStatus:
     type: string
     enum:
