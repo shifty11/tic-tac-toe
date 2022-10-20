@@ -33,6 +33,10 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export interface TictactoeMsgCreateGameResponse {
+  gameId?: string;
+}
+
 /**
  * Params defines the parameters for the module.
  */
