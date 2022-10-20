@@ -86,3 +86,7 @@ There could also be a time limit for accepting an invitation.</br>
 <b>(not necessary for this exercise)</b>
 - Should a player be able to abandon a game?</br>
 <b>(not necessary for this exercise)</b>
+
+### Testing
+- [ ] Test game logic
+- 
