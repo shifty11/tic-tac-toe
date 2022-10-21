@@ -21,3 +21,9 @@ func KeyPrefix(p string) []byte {
 const (
 	SystemInfoKey = "SystemInfo/value/"
 )
+
+const (
+	CreateGameGas = 15000
+	AcceptGameGas = 1000
+	PlayTurnGas   = 1000
+)

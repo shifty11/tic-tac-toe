@@ -98,3 +98,15 @@ func TestCreate2Games(t *testing.T) {
 	require.True(t, found)
 	require.EqualValues(t, types.SystemInfo{NextGameId: 3}, systemInfo)
 }
+
+func TestCreate1GameConsumedGas(t *testing.T) {
+	msgServer, _, context := setupMsgServer(t)
+	ctx := sdk.UnwrapSDKContext(context)
+	before := ctx.GasMeter().GasConsumed()
+	msgServer.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Player2: bob,
+	})
+	after := ctx.GasMeter().GasConsumed()
+	require.GreaterOrEqual(t, after, before+20_000)
+}

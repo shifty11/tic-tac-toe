@@ -38,6 +38,8 @@ func (k msgServer) AcceptInvite(goCtx context.Context, msg *types.MsgAcceptInvit
 	storedGame.Status = types.StoredGame_IN_PROGRESS
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
+	ctx.GasMeter().ConsumeGas(types.AcceptGameGas, "Accept game") //TODO: test this
+
 	err = ctx.EventManager().EmitTypedEvent(
 		&types.EventInviteAccepted{
 			GameIndex: msg.GameId,

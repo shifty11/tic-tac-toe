@@ -47,6 +47,8 @@ func (k msgServer) PlayTurn(goCtx context.Context, msg *types.MsgPlayTurn) (*typ
 
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
+	ctx.GasMeter().ConsumeGas(types.PlayTurnGas, "Play turn") //TODO: test this
+
 	err = ctx.EventManager().EmitTypedEvent(
 		&types.EventTurnPlayed{
 			GameIndex: msg.GameId,
