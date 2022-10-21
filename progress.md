@@ -90,3 +90,18 @@ There could also be a time limit for accepting an invitation.</br>
 ### Testing
 - [ ] Test game logic
 - [ ] Integration tests
+
+### How to test on the command line
+```bash
+alice=$(tic-tac-toed keys show alice -a)
+bob=$(tic-tac-toed keys show bob -a)
+
+gameIndex=$(tic-tac-toed tx tictactoe create-game $bob --from alice --yes --output json  | jq '.logs | .[0].events[1] | .attributes[0].value' | grep -Eo '[0-9]{1,4}')
+
+tic-tac-toed tx tictactoe accept-invite $gameIndex --from bob --yes 
+tic-tac-toed tx tictactoe play-turn $gameIndex 0 0 --from bob --yes --output json | jq '.logs | .[0].events[1] .attributes[0].value'
+tic-tac-toed tx tictactoe play-turn $gameIndex 0 1 --from alice --yes --output json | jq '.logs | .[0].events[1] .attributes[0].value'
+tic-tac-toed tx tictactoe play-turn $gameIndex 1 1 --from bob --yes --output json | jq '.logs | .[0].events[1] | .attributes[0].value'
+tic-tac-toed tx tictactoe play-turn $gameIndex 2 1 --from alice --yes --output json | jq '.logs | .[0].events[1] | .attributes[0].value' 
+tic-tac-toed tx tictactoe play-turn $gameIndex 2 2 --from bob --yes
+```
