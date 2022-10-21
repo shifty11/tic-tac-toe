@@ -1,0 +1,11 @@
+syntax = "proto3";
+package shifty11.tictactoe.tictactoe;
+
+option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
+
+message EventCreateGame {
+  string gameIndex = 1;
+  string player1 = 2; 
+  string player2 = 3;
+}
+

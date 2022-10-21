@@ -350,7 +350,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title tictactoe/genesis.proto
+ * @title tictactoe/events.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {

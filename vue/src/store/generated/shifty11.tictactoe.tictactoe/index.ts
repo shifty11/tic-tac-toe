@@ -1,11 +1,12 @@
 import { Client, registry, MissingWalletError } from 'shifty11-tic-tac-toe-client-ts'
 
+import { EventCreateGame } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { Params } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { StoredGame } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { SystemInfo } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 
 
-export { Params, StoredGame, SystemInfo };
+export { EventCreateGame, Params, StoredGame, SystemInfo };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -42,6 +43,7 @@ const getDefaultState = () => {
 				StoredGameAll: {},
 				
 				_Structure: {
+						EventCreateGame: getStructure(EventCreateGame.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						StoredGame: getStructure(StoredGame.fromPartial({})),
 						SystemInfo: getStructure(SystemInfo.fromPartial({})),

@@ -30,8 +30,16 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	storedGame := types.NewStoredGame(creator, otherPlayer, newIndex)
 	k.Keeper.SetStoredGame(ctx, storedGame)
 
-	// TODO: emit events
-	// TODO: write tests
+	err = ctx.EventManager().EmitTypedEvent(
+		&types.EventCreateGame{
+			GameIndex: newIndex,
+			Player1:   storedGame.Player1,
+			Player2:   storedGame.Player2,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
 
 	return &types.MsgCreateGameResponse{GameId: newIndex}, nil
 }
