@@ -15,7 +15,7 @@ const (
 func TestDefineStartPlayer(t *testing.T) {
 	aliceAddress, err1 := sdk.AccAddressFromBech32(alice)
 	bobAddress, err2 := sdk.AccAddressFromBech32(bob)
-	p1, p2 := defineStartPlayer(aliceAddress, bobAddress)
+	p2, p1 := defineStartPlayer(aliceAddress, bobAddress)
 	require.Equal(t, aliceAddress, p1)
 	require.Equal(t, bobAddress, p2)
 	require.Nil(t, err2)

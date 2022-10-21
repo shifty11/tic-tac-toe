@@ -19,12 +19,12 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
-		return nil, errors.Wrapf(err, types.ErrPlayerAddressInvalid.Error(), creator)
+		return nil, errors.Wrapf(err, types.ErrPlayerAddressInvalid.Error(), msg.Creator)
 	}
 
 	otherPlayer, err := sdk.AccAddressFromBech32(msg.Player2)
 	if err != nil {
-		return nil, errors.Wrapf(err, types.ErrPlayerAddressInvalid.Error(), otherPlayer)
+		return nil, errors.Wrapf(err, types.ErrPlayerAddressInvalid.Error(), msg.Player2)
 	}
 
 	storedGame := types.NewStoredGame(creator, otherPlayer, newIndex)

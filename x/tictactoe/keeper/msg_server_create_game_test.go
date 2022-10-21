@@ -19,6 +19,16 @@ func TestCreateGame(t *testing.T) {
 	})
 	require.Nil(t, err)
 	require.EqualValues(t, types.MsgCreateGameResponse{
-		GameId: "",
+		GameId: "1",
 	}, *createResponse)
+}
+
+func TestCreateGameWrongPlayerAddress(t *testing.T) {
+	msgServer, context := setupMsgServer(t)
+	createResponse, err := msgServer.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Player2: "wrong address",
+	})
+	require.Error(t, err)
+	require.Nil(t, createResponse)
 }
