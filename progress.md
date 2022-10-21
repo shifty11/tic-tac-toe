@@ -17,7 +17,7 @@
 - [x] Scaffold new blockchain
 - [x] Create game logic
   - [x] Copy from https://golangbyexample.com/tic-tac-toe-program-golang/
-  - [ ] Adjust game logic to my needs
+  - [x] Adjust game logic to my needs
 
 ### Actions
 - [x] Create-Game
