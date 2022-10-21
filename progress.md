@@ -39,14 +39,14 @@
     - [ ] Game does not exist
     - [ ] Game is not open
     - [ ] Player is not invited
-- [ ] Play-Turn
-  - [ ] If winning move, finish game with status `ended` and set winner to current player
-  - [ ] If draw, finish game with status `ended` and set winner to `draw`
-  - [ ] Errors:
-    - [ ] Game does not exist
-    - [ ] Game is not in progress
-    - [ ] Player is not allowed to play
-    - [ ] Invalid move
+- [x] Play-Turn
+  - [x] If winning move, finish game with status `ended` and set winner to current player
+  - [x] If draw, finish game with status `ended` and set winner to `draw`
+  - [x] Errors:
+    - [x] Game does not exist
+    - [x] Game is not in progress
+    - [x] Player is not allowed to play
+    - [x] Invalid move
 
 ### Queries
 - [x] List-Games

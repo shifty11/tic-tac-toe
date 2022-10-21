@@ -108,6 +108,7 @@ func TestPlayTurnSuccess(t *testing.T) {
 	require.EqualValues(t, &types.MsgPlayTurnResponse{
 		Status: types.MsgPlayTurnResponse_IN_PROGRESS,
 		Winner: types.MsgPlayTurnResponse_NONE,
+		Board:  "*........",
 	}, response)
 
 	game, found := keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
@@ -127,12 +128,13 @@ func TestPlayTurnSuccess(t *testing.T) {
 	require.Len(t, events, 3)
 	event := events[2]
 	require.EqualValues(t, "shifty11.tictactoe.tictactoe.EventTurnPlayed", event.Type)
-	require.Len(t, event.Attributes, 5)
-	require.Equal(t, event.Attributes[0].String(), `column: 0`)
-	require.Equal(t, event.Attributes[1].String(), `gameIndex: "1"`)
-	require.Equal(t, event.Attributes[2].String(), fmt.Sprintf(`playedBy: "%s"`, bob))
-	require.Equal(t, event.Attributes[3].String(), `row: 0`)
-	require.Equal(t, event.Attributes[4].String(), `winner: "NONE"`)
+	require.Len(t, event.Attributes, 6)
+	require.Equal(t, event.Attributes[0].String(), `board: "*........"`)
+	require.Equal(t, event.Attributes[1].String(), `column: 0`)
+	require.Equal(t, event.Attributes[2].String(), `gameIndex: "1"`)
+	require.Equal(t, event.Attributes[3].String(), fmt.Sprintf(`playedBy: "%s"`, bob))
+	require.Equal(t, event.Attributes[4].String(), `row: 0`)
+	require.Equal(t, event.Attributes[5].String(), `winner: "NONE"`)
 }
 
 //TODO: Test a couple of games with more turns and check the winner
