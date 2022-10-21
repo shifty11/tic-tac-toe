@@ -7,17 +7,12 @@ import { msgTypes } from './registry';
 import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
-import { MsgCreateGame } from "./types/tictactoe/tx";
 import { MsgAcceptInvite } from "./types/tictactoe/tx";
+import { MsgCreateGame } from "./types/tictactoe/tx";
+import { MsgPlayTurn } from "./types/tictactoe/tx";
 
 
-export { MsgCreateGame, MsgAcceptInvite };
-
-type sendMsgCreateGameParams = {
-  value: MsgCreateGame,
-  fee?: StdFee,
-  memo?: string
-};
+export { MsgAcceptInvite, MsgCreateGame, MsgPlayTurn };
 
 type sendMsgAcceptInviteParams = {
   value: MsgAcceptInvite,
@@ -25,13 +20,29 @@ type sendMsgAcceptInviteParams = {
   memo?: string
 };
 
+type sendMsgCreateGameParams = {
+  value: MsgCreateGame,
+  fee?: StdFee,
+  memo?: string
+};
+
+type sendMsgPlayTurnParams = {
+  value: MsgPlayTurn,
+  fee?: StdFee,
+  memo?: string
+};
+
+
+type msgAcceptInviteParams = {
+  value: MsgAcceptInvite,
+};
 
 type msgCreateGameParams = {
   value: MsgCreateGame,
 };
 
-type msgAcceptInviteParams = {
-  value: MsgAcceptInvite,
+type msgPlayTurnParams = {
+  value: MsgPlayTurn,
 };
 
 
@@ -52,20 +63,6 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 
   return {
 		
-		async sendMsgCreateGame({ value, fee, memo }: sendMsgCreateGameParams): Promise<DeliverTxResponse> {
-			if (!signer) {
-					throw new Error('TxClient:sendMsgCreateGame: Unable to sign Tx. Signer is not present.')
-			}
-			try {			
-				const { address } = (await signer.getAccounts())[0]; 
-				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
-				let msg = this.msgCreateGame({ value: MsgCreateGame.fromPartial(value) })
-				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
-			} catch (e: any) {
-				throw new Error('TxClient:sendMsgCreateGame: Could not broadcast Tx: '+ e.message)
-			}
-		},
-		
 		async sendMsgAcceptInvite({ value, fee, memo }: sendMsgAcceptInviteParams): Promise<DeliverTxResponse> {
 			if (!signer) {
 					throw new Error('TxClient:sendMsgAcceptInvite: Unable to sign Tx. Signer is not present.')
@@ -80,6 +77,42 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgCreateGame({ value, fee, memo }: sendMsgCreateGameParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgCreateGame: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgCreateGame({ value: MsgCreateGame.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgCreateGame: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		async sendMsgPlayTurn({ value, fee, memo }: sendMsgPlayTurnParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgPlayTurn: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgPlayTurn({ value: MsgPlayTurn.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgPlayTurn: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
+		
+		msgAcceptInvite({ value }: msgAcceptInviteParams): EncodeObject {
+			try {
+				return { typeUrl: "/shifty11.tictactoe.tictactoe.MsgAcceptInvite", value: MsgAcceptInvite.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgAcceptInvite: Could not create message: ' + e.message)
+			}
+		},
 		
 		msgCreateGame({ value }: msgCreateGameParams): EncodeObject {
 			try {
@@ -89,11 +122,11 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
-		msgAcceptInvite({ value }: msgAcceptInviteParams): EncodeObject {
+		msgPlayTurn({ value }: msgPlayTurnParams): EncodeObject {
 			try {
-				return { typeUrl: "/shifty11.tictactoe.tictactoe.MsgAcceptInvite", value: MsgAcceptInvite.fromPartial( value ) }  
+				return { typeUrl: "/shifty11.tictactoe.tictactoe.MsgPlayTurn", value: MsgPlayTurn.fromPartial( value ) }  
 			} catch (e: any) {
-				throw new Error('TxClient:MsgAcceptInvite: Could not create message: ' + e.message)
+				throw new Error('TxClient:MsgPlayTurn: Could not create message: ' + e.message)
 			}
 		},
 		

@@ -33,3 +33,30 @@ func NewStoredGame(creator sdk.AccAddress, otherPlayer sdk.AccAddress, newIndex 
 	}
 	return storedGame
 }
+
+func (m *StoredGame) IsPlayersTurn(player sdk.AccAddress) bool {
+	return (m.Player1 == player.String() && m.Turn == 1) || (m.Player2 == player.String() && m.Turn == 2)
+}
+
+func (m *StoredGame) PlayTurn(x uint64, y uint64) error {
+	game := rules.ParseGame(m.Board)
+	err := game.PlayTurn(int(m.Turn), int(x), int(y))
+	if err != nil {
+		return err
+	}
+	m.Turn = uint64(game.Turn())
+	if game.GameStatus == rules.FirstPlayerWin {
+		m.Winner = StoredGame_PLAYER1
+	} else if game.GameStatus == rules.SecondPlayerWin {
+		m.Winner = StoredGame_PLAYER2
+	} else if game.GameStatus == rules.GameDraw {
+		m.Winner = StoredGame_DRAW
+	}
+	if m.Winner == StoredGame_NONE {
+		m.Status = StoredGame_IN_PROGRESS
+	} else {
+		m.Status = StoredGame_FINISHED
+	}
+	m.Board = game.Board.String()
+	return nil
+}

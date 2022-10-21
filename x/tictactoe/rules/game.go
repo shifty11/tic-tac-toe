@@ -1,6 +1,9 @@
 package rules
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Symbol uint8
 
@@ -162,7 +165,7 @@ type Game struct {
 	secondPlayer    iPlayer
 	firstPlayerTurn bool
 	moveIndex       int
-	gameStatus      GameStatus
+	GameStatus      GameStatus
 }
 
 func initGame(b *Board, p1, p2 iPlayer) *Game {
@@ -171,7 +174,7 @@ func initGame(b *Board, p1, p2 iPlayer) *Game {
 		firstPlayer:     p1,
 		secondPlayer:    p2,
 		firstPlayerTurn: true,
-		gameStatus:      GameInProgress,
+		GameStatus:      GameInProgress,
 	}
 	return game
 }
@@ -206,7 +209,7 @@ func (g *Game) play() error {
 		g.moveIndex = g.moveIndex + 1
 
 		g.setGameStatus(win, symbol)
-		if g.gameStatus != GameInProgress {
+		if g.GameStatus != GameInProgress {
 			break
 		}
 	}
@@ -216,18 +219,18 @@ func (g *Game) play() error {
 func (g *Game) setGameStatus(win bool, symbol Symbol) {
 	if win {
 		if g.firstPlayer.getSymbol() == symbol {
-			g.gameStatus = FirstPlayerWin
+			g.GameStatus = FirstPlayerWin
 			return
 		} else if g.secondPlayer.getSymbol() == symbol {
-			g.gameStatus = SecondPlayerWin
+			g.GameStatus = SecondPlayerWin
 			return
 		}
 	}
 	if g.moveIndex == g.Board.dimension*g.Board.dimension {
-		g.gameStatus = GameDraw
+		g.GameStatus = GameDraw
 		return
 	}
-	g.gameStatus = GameInProgress
+	g.GameStatus = GameInProgress
 }
 
 func (g *Game) printMove(player iPlayer, x, y int) {
@@ -244,7 +247,7 @@ func (g *Game) printMove(player iPlayer, x, y int) {
 }
 
 func (g *Game) printResult() {
-	switch g.gameStatus {
+	switch g.GameStatus {
 	case GameInProgress:
 		fmt.Println("Game in Between")
 	case GameDraw:
@@ -279,7 +282,45 @@ func NewGame() *Game {
 	return game
 }
 
-func (g *Game) PlayTurn(playerId int, x, y int) error {
+func ParseGame(boardStr string) *Game {
+	board := &Board{
+		square:    [][]Symbol{{Dot, Dot, Dot}, {Dot, Dot, Dot}, {Dot, Dot, Dot}},
+		dimension: 3,
+	}
+	cntTurns := 0
+	for i, symbol := range strings.Split(boardStr, "") {
+		x := i / 3
+		y := i % 3
+		if symbol == "*" {
+			board.square[x][y] = Cross
+			cntTurns = cntTurns + 1
+		} else if symbol == "o" {
+			board.square[x][y] = Circle
+			cntTurns = cntTurns + 1
+		}
+	}
+
+	player1 := &humanPlayer{
+		symbol: Cross,
+		id:     1,
+	}
+
+	player2 := &humanPlayer{
+		symbol: Circle,
+		id:     2,
+	}
+
+	game := &Game{
+		Board:           board,
+		firstPlayer:     player1,
+		secondPlayer:    player2,
+		firstPlayerTurn: cntTurns%2 == 0,
+		GameStatus:      GameInProgress,
+	}
+	return game
+}
+
+func (g *Game) PlayTurn(playerId, x, y int) error {
 	var win bool
 	var symbol Symbol
 	var err error

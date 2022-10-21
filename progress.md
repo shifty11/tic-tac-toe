@@ -89,4 +89,4 @@ There could also be a time limit for accepting an invitation.</br>
 
 ### Testing
 - [ ] Test game logic
-- 
+- [ ] Integration tests

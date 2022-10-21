@@ -27,7 +27,7 @@ func (k msgServer) AcceptInvite(goCtx context.Context, msg *types.MsgAcceptInvit
 
 	if storedGame.Player1 != creator.String() && storedGame.Player2 != creator.String() {
 		err = errors.New(fmt.Sprintf("player %v is not part of game with id %v", msg.Creator, msg.GameId))
-		return nil, sdkerrors.Wrapf(err, types.ErrPlayerNotInvited.Error())
+		return nil, sdkerrors.Wrapf(err, types.ErrPlayerNotPartOfGame.Error())
 	}
 
 	if storedGame.Status != types.StoredGame_OPEN {

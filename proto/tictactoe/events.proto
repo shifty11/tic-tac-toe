@@ -14,3 +14,18 @@ message EventInviteAccepted {
   string player1 = 2;
   string player2 = 3;
 }
+
+message EventTurnPlayed {
+  uint64 gameIndex = 1;
+  string playedBy = 2;
+  uint32 row = 3;
+  uint32 column = 4;
+  enum WinnerStatus {
+    NONE = 0;
+    PLAYER1 = 1;
+    PLAYER2 = 2;
+    DRAW = 3;
+  }
+  WinnerStatus winner = 5;
+  string board = 6;
+}

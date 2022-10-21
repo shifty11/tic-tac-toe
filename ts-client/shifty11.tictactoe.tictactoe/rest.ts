@@ -9,19 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export enum StoredGameGameStatus {
-  OPEN = "OPEN",
-  IN_PROGRESS = "IN_PROGRESS",
-  FINISHED = "FINISHED",
-}
-
-export enum StoredGameWinnerStatus {
-  NONE = "NONE",
-  PLAYER1 = "PLAYER1",
-  PLAYER2 = "PLAYER2",
-  DRAW = "DRAW",
-}
-
 export interface ProtobufAny {
   "@type"?: string;
 }
@@ -38,6 +25,25 @@ export type TictactoeMsgAcceptInviteResponse = object;
 export interface TictactoeMsgCreateGameResponse {
   /** @format uint64 */
   gameId?: string;
+}
+
+export interface TictactoeMsgPlayTurnResponse {
+  status?: TictactoeMsgPlayTurnResponseGameStatus;
+  winner?: TictactoeMsgPlayTurnResponseWinnerStatus;
+  board?: string;
+}
+
+export enum TictactoeMsgPlayTurnResponseGameStatus {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  FINISHED = "FINISHED",
+}
+
+export enum TictactoeMsgPlayTurnResponseWinnerStatus {
+  NONE = "NONE",
+  PLAYER1 = "PLAYER1",
+  PLAYER2 = "PLAYER2",
+  DRAW = "DRAW",
 }
 
 /**
@@ -83,9 +89,22 @@ export interface TictactoeStoredGame {
 
   /** @format uint64 */
   turn?: string;
-  status?: StoredGameGameStatus;
-  winner?: StoredGameWinnerStatus;
+  status?: TictactoeStoredGameGameStatus;
+  winner?: TictactoeStoredGameWinnerStatus;
   board?: string;
+}
+
+export enum TictactoeStoredGameGameStatus {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  FINISHED = "FINISHED",
+}
+
+export enum TictactoeStoredGameWinnerStatus {
+  NONE = "NONE",
+  PLAYER1 = "PLAYER1",
+  PLAYER2 = "PLAYER2",
+  DRAW = "DRAW",
 }
 
 export interface TictactoeSystemInfo {

@@ -59,7 +59,7 @@ func TestAcceptInviteNotInvited(t *testing.T) {
 		GameId:  1,
 	})
 	require.Nil(t, acceptResponse)
-	require.Equal(t, err.Error(), types.ErrPlayerNotInvited.Error()+fmt.Sprintf(": player %s is not part of game with id 1", carol))
+	require.Equal(t, types.ErrPlayerNotPartOfGame.Error()+fmt.Sprintf(": player %s is not part of game with id 1", carol), err.Error())
 }
 
 func TestAcceptInviteGameDoesNoteExist(t *testing.T) {
@@ -75,7 +75,7 @@ func TestAcceptInviteGameDoesNoteExist(t *testing.T) {
 		GameId:  2,
 	})
 	require.Nil(t, acceptResponse)
-	require.Equal(t, err.Error(), types.ErrGameNotFound.Error()+": game with id: 2 not found")
+	require.Equal(t, types.ErrGameNotFound.Error()+": game with id: 2 not found", err.Error())
 }
 
 func TestAcceptInviteGameAlreadyStarted(t *testing.T) {
@@ -98,5 +98,5 @@ func TestAcceptInviteGameAlreadyStarted(t *testing.T) {
 		GameId:  1,
 	})
 	require.Nil(t, acceptResponse)
-	require.Equal(t, err.Error(), types.ErrGameAlreadyStarted.Error()+": game with id: 1 is already started")
+	require.Equal(t, types.ErrGameAlreadyStarted.Error()+": game with id: 1 is already started", err.Error())
 }

@@ -22,6 +22,37 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+type EventTurnPlayed_WinnerStatus int32
+
+const (
+	EventTurnPlayed_NONE    EventTurnPlayed_WinnerStatus = 0
+	EventTurnPlayed_PLAYER1 EventTurnPlayed_WinnerStatus = 1
+	EventTurnPlayed_PLAYER2 EventTurnPlayed_WinnerStatus = 2
+	EventTurnPlayed_DRAW    EventTurnPlayed_WinnerStatus = 3
+)
+
+var EventTurnPlayed_WinnerStatus_name = map[int32]string{
+	0: "NONE",
+	1: "PLAYER1",
+	2: "PLAYER2",
+	3: "DRAW",
+}
+
+var EventTurnPlayed_WinnerStatus_value = map[string]int32{
+	"NONE":    0,
+	"PLAYER1": 1,
+	"PLAYER2": 2,
+	"DRAW":    3,
+}
+
+func (x EventTurnPlayed_WinnerStatus) String() string {
+	return proto.EnumName(EventTurnPlayed_WinnerStatus_name, int32(x))
+}
+
+func (EventTurnPlayed_WinnerStatus) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_81ad74035ead97aa, []int{2, 0}
+}
+
 type EventCreateGame struct {
 	GameIndex uint64 `protobuf:"varint,1,opt,name=gameIndex,proto3" json:"gameIndex,omitempty"`
 	Player1   string `protobuf:"bytes,2,opt,name=player1,proto3" json:"player1,omitempty"`
@@ -142,29 +173,124 @@ func (m *EventInviteAccepted) GetPlayer2() string {
 	return ""
 }
 
+type EventTurnPlayed struct {
+	GameIndex uint64                       `protobuf:"varint,1,opt,name=gameIndex,proto3" json:"gameIndex,omitempty"`
+	PlayedBy  string                       `protobuf:"bytes,2,opt,name=playedBy,proto3" json:"playedBy,omitempty"`
+	Row       uint32                       `protobuf:"varint,3,opt,name=row,proto3" json:"row,omitempty"`
+	Column    uint32                       `protobuf:"varint,4,opt,name=column,proto3" json:"column,omitempty"`
+	Winner    EventTurnPlayed_WinnerStatus `protobuf:"varint,5,opt,name=winner,proto3,enum=shifty11.tictactoe.tictactoe.EventTurnPlayed_WinnerStatus" json:"winner,omitempty"`
+	Board     string                       `protobuf:"bytes,6,opt,name=board,proto3" json:"board,omitempty"`
+}
+
+func (m *EventTurnPlayed) Reset()         { *m = EventTurnPlayed{} }
+func (m *EventTurnPlayed) String() string { return proto.CompactTextString(m) }
+func (*EventTurnPlayed) ProtoMessage()    {}
+func (*EventTurnPlayed) Descriptor() ([]byte, []int) {
+	return fileDescriptor_81ad74035ead97aa, []int{2}
+}
+func (m *EventTurnPlayed) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *EventTurnPlayed) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_EventTurnPlayed.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *EventTurnPlayed) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_EventTurnPlayed.Merge(m, src)
+}
+func (m *EventTurnPlayed) XXX_Size() int {
+	return m.Size()
+}
+func (m *EventTurnPlayed) XXX_DiscardUnknown() {
+	xxx_messageInfo_EventTurnPlayed.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_EventTurnPlayed proto.InternalMessageInfo
+
+func (m *EventTurnPlayed) GetGameIndex() uint64 {
+	if m != nil {
+		return m.GameIndex
+	}
+	return 0
+}
+
+func (m *EventTurnPlayed) GetPlayedBy() string {
+	if m != nil {
+		return m.PlayedBy
+	}
+	return ""
+}
+
+func (m *EventTurnPlayed) GetRow() uint32 {
+	if m != nil {
+		return m.Row
+	}
+	return 0
+}
+
+func (m *EventTurnPlayed) GetColumn() uint32 {
+	if m != nil {
+		return m.Column
+	}
+	return 0
+}
+
+func (m *EventTurnPlayed) GetWinner() EventTurnPlayed_WinnerStatus {
+	if m != nil {
+		return m.Winner
+	}
+	return EventTurnPlayed_NONE
+}
+
+func (m *EventTurnPlayed) GetBoard() string {
+	if m != nil {
+		return m.Board
+	}
+	return ""
+}
+
 func init() {
+	proto.RegisterEnum("shifty11.tictactoe.tictactoe.EventTurnPlayed_WinnerStatus", EventTurnPlayed_WinnerStatus_name, EventTurnPlayed_WinnerStatus_value)
 	proto.RegisterType((*EventCreateGame)(nil), "shifty11.tictactoe.tictactoe.EventCreateGame")
 	proto.RegisterType((*EventInviteAccepted)(nil), "shifty11.tictactoe.tictactoe.EventInviteAccepted")
+	proto.RegisterType((*EventTurnPlayed)(nil), "shifty11.tictactoe.tictactoe.EventTurnPlayed")
 }
 
 func init() { proto.RegisterFile("tictactoe/events.proto", fileDescriptor_81ad74035ead97aa) }
 
 var fileDescriptor_81ad74035ead97aa = []byte{
-	// 221 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2b, 0xc9, 0x4c, 0x2e,
-	0x49, 0x4c, 0x2e, 0xc9, 0x4f, 0xd5, 0x4f, 0x2d, 0x4b, 0xcd, 0x2b, 0x29, 0xd6, 0x2b, 0x28, 0xca,
-	0x2f, 0xc9, 0x17, 0x92, 0x29, 0xce, 0xc8, 0x4c, 0x2b, 0xa9, 0x34, 0x34, 0xd4, 0x83, 0x2b, 0x40,
-	0xb0, 0x94, 0x92, 0xb9, 0xf8, 0x5d, 0x41, 0xaa, 0x9d, 0x8b, 0x52, 0x13, 0x4b, 0x52, 0xdd, 0x13,
-	0x73, 0x53, 0x85, 0x64, 0xb8, 0x38, 0xd3, 0x13, 0x73, 0x53, 0x3d, 0xf3, 0x52, 0x52, 0x2b, 0x24,
-	0x18, 0x15, 0x18, 0x35, 0x58, 0x82, 0x10, 0x02, 0x42, 0x12, 0x5c, 0xec, 0x05, 0x39, 0x89, 0x95,
-	0xa9, 0x45, 0x86, 0x12, 0x4c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x30, 0x2e, 0x42, 0xc6, 0x48, 0x82,
-	0x19, 0x59, 0xc6, 0x48, 0x29, 0x9d, 0x4b, 0x18, 0x6c, 0x89, 0x67, 0x5e, 0x59, 0x66, 0x49, 0xaa,
-	0x63, 0x72, 0x72, 0x6a, 0x41, 0x49, 0x6a, 0x0a, 0xf5, 0x2d, 0x72, 0xf2, 0x3e, 0xf1, 0x48, 0x8e,
-	0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58,
-	0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0xc3, 0xf4, 0xcc, 0x92, 0x8c, 0xd2, 0x24, 0xbd, 0xe4,
-	0xfc, 0x5c, 0x7d, 0x58, 0x80, 0xe8, 0x97, 0x64, 0x26, 0xeb, 0x96, 0x24, 0x26, 0xeb, 0x82, 0xc2,
-	0xac, 0x42, 0x1f, 0x11, 0x7e, 0x25, 0x95, 0x05, 0xa9, 0xc5, 0x49, 0x6c, 0xe0, 0xf0, 0x33, 0x06,
-	0x04, 0x00, 0x00, 0xff, 0xff, 0x2e, 0x22, 0x6e, 0x0b, 0x59, 0x01, 0x00, 0x00,
+	// 365 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x52, 0xcd, 0x4e, 0xf2, 0x40,
+	0x14, 0xed, 0xf0, 0x53, 0x60, 0xbe, 0xbf, 0x66, 0x3e, 0x43, 0x1a, 0x43, 0x1a, 0xc2, 0x8a, 0x0d,
+	0x6d, 0x5a, 0x77, 0xc6, 0x0d, 0x28, 0x31, 0x44, 0x83, 0xa4, 0x9a, 0x10, 0xdd, 0x0d, 0xd3, 0x11,
+	0x9a, 0xd0, 0x9f, 0xb4, 0xb7, 0x40, 0xdf, 0xc2, 0x17, 0xf0, 0x7d, 0x5c, 0xb2, 0x74, 0x69, 0xe0,
+	0x45, 0x4c, 0x6b, 0xa1, 0xc4, 0x85, 0xae, 0xdc, 0xdd, 0x73, 0xee, 0xb9, 0x3d, 0xa7, 0x93, 0x83,
+	0xeb, 0x60, 0x33, 0xa0, 0x0c, 0x3c, 0xae, 0xf1, 0x05, 0x77, 0x21, 0x54, 0xfd, 0xc0, 0x03, 0x8f,
+	0x34, 0xc2, 0x99, 0xfd, 0x08, 0xb1, 0xae, 0xab, 0x7b, 0x41, 0x3e, 0xb5, 0x18, 0xfe, 0xd7, 0x4f,
+	0xd4, 0xe7, 0x01, 0xa7, 0xc0, 0x2f, 0xa9, 0xc3, 0x49, 0x03, 0xd7, 0xa6, 0xd4, 0xe1, 0x03, 0xd7,
+	0xe2, 0x2b, 0x19, 0x35, 0x51, 0xbb, 0x64, 0xe6, 0x04, 0x91, 0x71, 0xc5, 0x9f, 0xd3, 0x98, 0x07,
+	0xba, 0x5c, 0x68, 0xa2, 0x76, 0xcd, 0xdc, 0xc1, 0x7c, 0x63, 0xc8, 0xc5, 0xc3, 0x8d, 0xd1, 0x9a,
+	0xe2, 0xff, 0xa9, 0xc9, 0xc0, 0x5d, 0xd8, 0xc0, 0xbb, 0x8c, 0x71, 0x1f, 0xb8, 0xf5, 0x03, 0x46,
+	0xcf, 0x85, 0xec, 0x77, 0xee, 0xa2, 0xc0, 0x1d, 0x25, 0xe4, 0x77, 0x2e, 0xc7, 0xb8, 0x9a, 0x1e,
+	0x5b, 0xbd, 0x38, 0xb3, 0xd9, 0x63, 0x22, 0xe1, 0x62, 0xe0, 0x2d, 0x53, 0x8f, 0x3f, 0x66, 0x32,
+	0x92, 0x3a, 0x16, 0x99, 0x37, 0x8f, 0x1c, 0x57, 0x2e, 0xa5, 0x64, 0x86, 0x88, 0x89, 0xc5, 0xa5,
+	0xed, 0xba, 0x3c, 0x90, 0xcb, 0x4d, 0xd4, 0xfe, 0x6b, 0x9c, 0xaa, 0x5f, 0x3d, 0xba, 0xfa, 0x29,
+	0xa2, 0x3a, 0x4e, 0x6f, 0x6f, 0x81, 0x42, 0x14, 0x9a, 0xd9, 0x97, 0xc8, 0x11, 0x2e, 0x4f, 0x3c,
+	0x1a, 0x58, 0xb2, 0x98, 0xc6, 0xfa, 0x00, 0xad, 0x33, 0xfc, 0xfb, 0x50, 0x4d, 0xaa, 0xb8, 0x34,
+	0xbc, 0x19, 0xf6, 0x25, 0x81, 0xfc, 0xc2, 0x95, 0xd1, 0x75, 0xf7, 0xbe, 0x6f, 0xea, 0x12, 0xca,
+	0x81, 0x21, 0x15, 0x12, 0xcd, 0x85, 0xd9, 0x1d, 0x4b, 0xc5, 0xde, 0xd5, 0xcb, 0x46, 0x41, 0xeb,
+	0x8d, 0x82, 0xde, 0x36, 0x0a, 0x7a, 0xda, 0x2a, 0xc2, 0x7a, 0xab, 0x08, 0xaf, 0x5b, 0x45, 0x78,
+	0xd0, 0xa7, 0x36, 0xcc, 0xa2, 0x89, 0xca, 0x3c, 0x47, 0xdb, 0x65, 0xd7, 0xc0, 0x66, 0x1d, 0xa0,
+	0xac, 0x93, 0x74, 0x6a, 0xa5, 0xe5, 0xfd, 0x82, 0xd8, 0xe7, 0xe1, 0x44, 0x4c, 0xfb, 0x75, 0xf2,
+	0x1e, 0x00, 0x00, 0xff, 0xff, 0x36, 0x2c, 0x9a, 0xa8, 0x79, 0x02, 0x00, 0x00,
 }
 
 func (m *EventCreateGame) Marshal() (dAtA []byte, err error) {
@@ -251,6 +377,63 @@ func (m *EventInviteAccepted) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *EventTurnPlayed) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *EventTurnPlayed) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *EventTurnPlayed) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Board) > 0 {
+		i -= len(m.Board)
+		copy(dAtA[i:], m.Board)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.Board)))
+		i--
+		dAtA[i] = 0x32
+	}
+	if m.Winner != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Winner))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.Column != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Column))
+		i--
+		dAtA[i] = 0x20
+	}
+	if m.Row != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.Row))
+		i--
+		dAtA[i] = 0x18
+	}
+	if len(m.PlayedBy) > 0 {
+		i -= len(m.PlayedBy)
+		copy(dAtA[i:], m.PlayedBy)
+		i = encodeVarintEvents(dAtA, i, uint64(len(m.PlayedBy)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.GameIndex != 0 {
+		i = encodeVarintEvents(dAtA, i, uint64(m.GameIndex))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintEvents(dAtA []byte, offset int, v uint64) int {
 	offset -= sovEvents(v)
 	base := offset
@@ -296,6 +479,35 @@ func (m *EventInviteAccepted) Size() (n int) {
 		n += 1 + l + sovEvents(uint64(l))
 	}
 	l = len(m.Player2)
+	if l > 0 {
+		n += 1 + l + sovEvents(uint64(l))
+	}
+	return n
+}
+
+func (m *EventTurnPlayed) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.GameIndex != 0 {
+		n += 1 + sovEvents(uint64(m.GameIndex))
+	}
+	l = len(m.PlayedBy)
+	if l > 0 {
+		n += 1 + l + sovEvents(uint64(l))
+	}
+	if m.Row != 0 {
+		n += 1 + sovEvents(uint64(m.Row))
+	}
+	if m.Column != 0 {
+		n += 1 + sovEvents(uint64(m.Column))
+	}
+	if m.Winner != 0 {
+		n += 1 + sovEvents(uint64(m.Winner))
+	}
+	l = len(m.Board)
 	if l > 0 {
 		n += 1 + l + sovEvents(uint64(l))
 	}
@@ -552,6 +764,196 @@ func (m *EventInviteAccepted) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Player2 = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipEvents(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *EventTurnPlayed) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowEvents
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: EventTurnPlayed: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: EventTurnPlayed: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GameIndex", wireType)
+			}
+			m.GameIndex = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.GameIndex |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field PlayedBy", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthEvents
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.PlayedBy = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Row", wireType)
+			}
+			m.Row = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Row |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Column", wireType)
+			}
+			m.Column = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Column |= uint32(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Winner", wireType)
+			}
+			m.Winner = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Winner |= EventTurnPlayed_WinnerStatus(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Board", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowEvents
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthEvents
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthEvents
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Board = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex

@@ -75270,6 +75270,41 @@ definitions:
       gameId:
         type: string
         format: uint64
+  shifty11.tictactoe.tictactoe.MsgPlayTurnResponse:
+    type: object
+    properties:
+      status:
+        type: string
+        enum:
+          - OPEN
+          - IN_PROGRESS
+          - FINISHED
+        default: OPEN
+      winner:
+        type: string
+        enum:
+          - NONE
+          - PLAYER1
+          - PLAYER2
+          - DRAW
+        default: NONE
+      board:
+        type: string
+  shifty11.tictactoe.tictactoe.MsgPlayTurnResponse.GameStatus:
+    type: string
+    enum:
+      - OPEN
+      - IN_PROGRESS
+      - FINISHED
+    default: OPEN
+  shifty11.tictactoe.tictactoe.MsgPlayTurnResponse.WinnerStatus:
+    type: string
+    enum:
+      - NONE
+      - PLAYER1
+      - PLAYER2
+      - DRAW
+    default: NONE
   shifty11.tictactoe.tictactoe.Params:
     type: object
     description: Params defines the parameters for the module.

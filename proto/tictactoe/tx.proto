@@ -9,6 +9,7 @@ option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
 service Msg {
       rpc CreateGame(MsgCreateGame) returns (MsgCreateGameResponse);
   rpc AcceptInvite(MsgAcceptInvite) returns (MsgAcceptInviteResponse);
+  rpc PlayTurn(MsgPlayTurn) returns (MsgPlayTurnResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -27,6 +28,30 @@ message MsgAcceptInvite {
 }
 
 message MsgAcceptInviteResponse {
+}
+
+message MsgPlayTurn {
+  string creator = 1;
+  uint64 gameId = 2;
+  uint64 x = 3;
+  uint64 y = 4;
+}
+
+message MsgPlayTurnResponse {
+  enum GameStatus {
+    OPEN = 0;
+    IN_PROGRESS = 1;
+    FINISHED = 2;
+  }
+  GameStatus status = 5;
+  enum WinnerStatus {
+    NONE = 0;
+    PLAYER1 = 1;
+    PLAYER2 = 2;
+    DRAW = 3;
+  }
+  WinnerStatus winner = 6;
+  string board = 7;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
