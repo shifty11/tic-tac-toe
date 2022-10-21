@@ -1,12 +1,13 @@
 import { Client, registry, MissingWalletError } from 'shifty11-tic-tac-toe-client-ts'
 
 import { EventCreateGame } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
+import { EventInviteAccepted } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { Params } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { StoredGame } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 import { SystemInfo } from "shifty11-tic-tac-toe-client-ts/shifty11.tictactoe.tictactoe/types"
 
 
-export { EventCreateGame, Params, StoredGame, SystemInfo };
+export { EventCreateGame, EventInviteAccepted, Params, StoredGame, SystemInfo };
 
 function initClient(vuexGetters) {
 	return new Client(vuexGetters['common/env/getEnv'], vuexGetters['common/wallet/signer'])
@@ -44,6 +45,7 @@ const getDefaultState = () => {
 				
 				_Structure: {
 						EventCreateGame: getStructure(EventCreateGame.fromPartial({})),
+						EventInviteAccepted: getStructure(EventInviteAccepted.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						StoredGame: getStructure(StoredGame.fromPartial({})),
 						SystemInfo: getStructure(SystemInfo.fromPartial({})),
@@ -225,6 +227,19 @@ export default {
 		},
 		
 		
+		async sendMsgAcceptInvite({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const client=await initClient(rootGetters)
+				const result = await client.Shifty11TictactoeTictactoe.tx.sendMsgAcceptInvite({ value, fee: {amount: fee, gas: "200000"}, memo })
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAcceptInvite:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgAcceptInvite:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgCreateGame({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const client=await initClient(rootGetters)
@@ -239,6 +254,19 @@ export default {
 			}
 		},
 		
+		async MsgAcceptInvite({ rootGetters }, { value }) {
+			try {
+				const client=initClient(rootGetters)
+				const msg = await client.Shifty11TictactoeTictactoe.tx.msgAcceptInvite({value})
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgAcceptInvite:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgAcceptInvite:Create Could not create message: ' + e.message)
+				}
+			}
+		},
 		async MsgCreateGame({ rootGetters }, { value }) {
 			try {
 				const client=initClient(rootGetters)

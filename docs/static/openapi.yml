@@ -75262,11 +75262,14 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  shifty11.tictactoe.tictactoe.MsgAcceptInviteResponse:
+    type: object
   shifty11.tictactoe.tictactoe.MsgCreateGameResponse:
     type: object
     properties:
       gameId:
         type: string
+        format: uint64
   shifty11.tictactoe.tictactoe.Params:
     type: object
     description: Params defines the parameters for the module.

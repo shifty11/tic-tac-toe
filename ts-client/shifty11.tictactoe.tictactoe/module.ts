@@ -8,9 +8,10 @@ import { IgniteClient } from "../client"
 import { MissingWalletError } from "../helpers"
 import { Api } from "./rest";
 import { MsgCreateGame } from "./types/tictactoe/tx";
+import { MsgAcceptInvite } from "./types/tictactoe/tx";
 
 
-export { MsgCreateGame };
+export { MsgCreateGame, MsgAcceptInvite };
 
 type sendMsgCreateGameParams = {
   value: MsgCreateGame,
@@ -18,9 +19,19 @@ type sendMsgCreateGameParams = {
   memo?: string
 };
 
+type sendMsgAcceptInviteParams = {
+  value: MsgAcceptInvite,
+  fee?: StdFee,
+  memo?: string
+};
+
 
 type msgCreateGameParams = {
   value: MsgCreateGame,
+};
+
+type msgAcceptInviteParams = {
+  value: MsgAcceptInvite,
 };
 
 
@@ -55,12 +66,34 @@ export const txClient = ({ signer, prefix, addr }: TxClientOptions = { addr: "ht
 			}
 		},
 		
+		async sendMsgAcceptInvite({ value, fee, memo }: sendMsgAcceptInviteParams): Promise<DeliverTxResponse> {
+			if (!signer) {
+					throw new Error('TxClient:sendMsgAcceptInvite: Unable to sign Tx. Signer is not present.')
+			}
+			try {			
+				const { address } = (await signer.getAccounts())[0]; 
+				const signingClient = await SigningStargateClient.connectWithSigner(addr,signer,{registry, prefix});
+				let msg = this.msgAcceptInvite({ value: MsgAcceptInvite.fromPartial(value) })
+				return await signingClient.signAndBroadcast(address, [msg], fee ? fee : defaultFee, memo)
+			} catch (e: any) {
+				throw new Error('TxClient:sendMsgAcceptInvite: Could not broadcast Tx: '+ e.message)
+			}
+		},
+		
 		
 		msgCreateGame({ value }: msgCreateGameParams): EncodeObject {
 			try {
 				return { typeUrl: "/shifty11.tictactoe.tictactoe.MsgCreateGame", value: MsgCreateGame.fromPartial( value ) }  
 			} catch (e: any) {
 				throw new Error('TxClient:MsgCreateGame: Could not create message: ' + e.message)
+			}
+		},
+		
+		msgAcceptInvite({ value }: msgAcceptInviteParams): EncodeObject {
+			try {
+				return { typeUrl: "/shifty11.tictactoe.tictactoe.MsgAcceptInvite", value: MsgAcceptInvite.fromPartial( value ) }  
+			} catch (e: any) {
+				throw new Error('TxClient:MsgAcceptInvite: Could not create message: ' + e.message)
 			}
 		},
 		

@@ -25,13 +25,13 @@
   - [x] Create new game with status `open`
   - [x] Errors: 
     - [x] Invalid player address
-- [ ] Accept-Invite
-  - [ ] Invited player accepts game invitation
-  - [ ] Game status changes to `in-progress`
-  - [ ] Errors:
-    - [ ] Game does not exist
-    - [ ] Game is not open
-    - [ ] Player is not invited
+- [x] Accept-Invite
+  - [x] Invited player accepts game invitation
+  - [x] Game status changes to `in-progress`
+  - [x] Errors:
+    - [x] Game does not exist
+    - [x] Game is not open
+    - [x] Player is not invited
 - [ ] Decline-Invite <b>(not necessary for this exercise)</b>
   - [ ] Invited player declines game invitation
   - [ ] Game status changes to `ended`

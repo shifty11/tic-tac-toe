@@ -8,6 +8,7 @@ option go_package = "github.com/shifty11/tic-tac-toe/x/tictactoe/types";
 // Msg defines the Msg service.
 service Msg {
       rpc CreateGame(MsgCreateGame) returns (MsgCreateGameResponse);
+  rpc AcceptInvite(MsgAcceptInvite) returns (MsgAcceptInviteResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -17,7 +18,15 @@ message MsgCreateGame {
 }
 
 message MsgCreateGameResponse {
-  string gameId = 1;
+  uint64 gameId = 1;
+}
+
+message MsgAcceptInvite {
+  string creator = 1;
+  uint64 gameId = 2;
+}
+
+message MsgAcceptInviteResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

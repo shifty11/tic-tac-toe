@@ -15,7 +15,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	if !found {
 		panic("SystemInfo not found")
 	}
-	newIndex := strconv.FormatUint(systemInfo.NextGameId, 10)
+	newIndex := systemInfo.NextGameId
 
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
@@ -27,8 +27,11 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 		return nil, errors.Wrapf(err, types.ErrPlayerAddressInvalid.Error(), msg.Player2)
 	}
 
-	storedGame := types.NewStoredGame(creator, otherPlayer, newIndex)
+	storedGame := types.NewStoredGame(creator, otherPlayer, strconv.FormatUint(newIndex, 10))
 	k.Keeper.SetStoredGame(ctx, storedGame)
+
+	systemInfo.NextGameId++
+	k.Keeper.SetSystemInfo(ctx, systemInfo)
 
 	err = ctx.EventManager().EmitTypedEvent(
 		&types.EventCreateGame{

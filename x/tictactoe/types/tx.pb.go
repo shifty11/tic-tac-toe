@@ -80,7 +80,7 @@ func (m *MsgCreateGame) GetPlayer2() string {
 }
 
 type MsgCreateGameResponse struct {
-	GameId string `protobuf:"bytes,1,opt,name=gameId,proto3" json:"gameId,omitempty"`
+	GameId uint64 `protobuf:"varint,1,opt,name=gameId,proto3" json:"gameId,omitempty"`
 }
 
 func (m *MsgCreateGameResponse) Reset()         { *m = MsgCreateGameResponse{} }
@@ -116,22 +116,112 @@ func (m *MsgCreateGameResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateGameResponse proto.InternalMessageInfo
 
-func (m *MsgCreateGameResponse) GetGameId() string {
+func (m *MsgCreateGameResponse) GetGameId() uint64 {
 	if m != nil {
 		return m.GameId
+	}
+	return 0
+}
+
+type MsgAcceptInvite struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	GameId  uint64 `protobuf:"varint,2,opt,name=gameId,proto3" json:"gameId,omitempty"`
+}
+
+func (m *MsgAcceptInvite) Reset()         { *m = MsgAcceptInvite{} }
+func (m *MsgAcceptInvite) String() string { return proto.CompactTextString(m) }
+func (*MsgAcceptInvite) ProtoMessage()    {}
+func (*MsgAcceptInvite) Descriptor() ([]byte, []int) {
+	return fileDescriptor_82e04dc317c099c4, []int{2}
+}
+func (m *MsgAcceptInvite) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAcceptInvite) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAcceptInvite.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAcceptInvite) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAcceptInvite.Merge(m, src)
+}
+func (m *MsgAcceptInvite) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAcceptInvite) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAcceptInvite.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAcceptInvite proto.InternalMessageInfo
+
+func (m *MsgAcceptInvite) GetCreator() string {
+	if m != nil {
+		return m.Creator
 	}
 	return ""
 }
 
+func (m *MsgAcceptInvite) GetGameId() uint64 {
+	if m != nil {
+		return m.GameId
+	}
+	return 0
+}
+
+type MsgAcceptInviteResponse struct {
+}
+
+func (m *MsgAcceptInviteResponse) Reset()         { *m = MsgAcceptInviteResponse{} }
+func (m *MsgAcceptInviteResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgAcceptInviteResponse) ProtoMessage()    {}
+func (*MsgAcceptInviteResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_82e04dc317c099c4, []int{3}
+}
+func (m *MsgAcceptInviteResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgAcceptInviteResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgAcceptInviteResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgAcceptInviteResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgAcceptInviteResponse.Merge(m, src)
+}
+func (m *MsgAcceptInviteResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgAcceptInviteResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgAcceptInviteResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgAcceptInviteResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgCreateGame)(nil), "shifty11.tictactoe.tictactoe.MsgCreateGame")
 	proto.RegisterType((*MsgCreateGameResponse)(nil), "shifty11.tictactoe.tictactoe.MsgCreateGameResponse")
+	proto.RegisterType((*MsgAcceptInvite)(nil), "shifty11.tictactoe.tictactoe.MsgAcceptInvite")
+	proto.RegisterType((*MsgAcceptInviteResponse)(nil), "shifty11.tictactoe.tictactoe.MsgAcceptInviteResponse")
 }
 
 func init() { proto.RegisterFile("tictactoe/tx.proto", fileDescriptor_82e04dc317c099c4) }
 
 var fileDescriptor_82e04dc317c099c4 = []byte{
-	// 231 bytes of a gzipped FileDescriptorProto
+	// 286 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2a, 0xc9, 0x4c, 0x2e,
 	0x49, 0x4c, 0x2e, 0xc9, 0x4f, 0xd5, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x92,
 	0x29, 0xce, 0xc8, 0x4c, 0x2b, 0xa9, 0x34, 0x34, 0xd4, 0x83, 0x4b, 0x22, 0x58, 0x4a, 0xce, 0x5c,
@@ -139,14 +229,17 @@ var fileDescriptor_82e04dc317c099c4 = []byte{
 	0x5c, 0xec, 0xc9, 0x20, 0x5e, 0x7e, 0x91, 0x04, 0xa3, 0x02, 0xa3, 0x06, 0x67, 0x10, 0x8c, 0x0b,
 	0x92, 0x29, 0xc8, 0x49, 0xac, 0x4c, 0x2d, 0x32, 0x92, 0x60, 0x82, 0xc8, 0x40, 0xb9, 0x4a, 0xfa,
 	0x5c, 0xa2, 0x28, 0x86, 0x04, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x0a, 0x89, 0x71, 0xb1,
-	0xa5, 0x27, 0xe6, 0xa6, 0x7a, 0xa6, 0x40, 0xcd, 0x82, 0xf2, 0x8c, 0x4a, 0xb9, 0x98, 0x7d, 0x8b,
-	0xd3, 0x85, 0xf2, 0xb8, 0xb8, 0x90, 0x6c, 0xd6, 0xd6, 0xc3, 0xe7, 0x52, 0x3d, 0x14, 0x1b, 0xa4,
-	0x8c, 0x49, 0x50, 0x0c, 0x73, 0x8e, 0x93, 0xf7, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31,
-	0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85, 0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb,
-	0x31, 0x44, 0x19, 0xa6, 0x67, 0x96, 0x64, 0x94, 0x26, 0xe9, 0x25, 0xe7, 0xe7, 0xea, 0xc3, 0x0c,
-	0xd6, 0x2f, 0xc9, 0x4c, 0xd6, 0x2d, 0x49, 0x4c, 0xd6, 0x05, 0x05, 0x67, 0x85, 0x3e, 0x52, 0xd0,
-	0x56, 0x16, 0xa4, 0x16, 0x27, 0xb1, 0x81, 0x83, 0xd7, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x3d,
-	0x73, 0x22, 0x37, 0x74, 0x01, 0x00, 0x00,
+	0xa5, 0x27, 0xe6, 0xa6, 0x7a, 0xa6, 0x80, 0xcd, 0x62, 0x09, 0x82, 0xf2, 0x94, 0x9c, 0xb9, 0xf8,
+	0x7d, 0x8b, 0xd3, 0x1d, 0x93, 0x93, 0x53, 0x0b, 0x4a, 0x3c, 0xf3, 0xca, 0x32, 0x4b, 0xf0, 0xd9,
+	0x8b, 0x30, 0x84, 0x09, 0xc5, 0x10, 0x49, 0x2e, 0x71, 0x34, 0x43, 0x60, 0xf6, 0x1a, 0xbd, 0x66,
+	0xe4, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0xca, 0xe3, 0xe2, 0x42, 0xf2, 0x9a, 0xb6, 0x1e, 0xbe, 0xa0,
+	0xd0, 0x43, 0xf1, 0x82, 0x94, 0x31, 0x09, 0x8a, 0xe1, 0xfe, 0x2d, 0xe1, 0xe2, 0x41, 0xf1, 0x94,
+	0x2e, 0x41, 0x43, 0x90, 0x95, 0x4b, 0x99, 0x92, 0xa4, 0x1c, 0x66, 0xab, 0x93, 0xf7, 0x89, 0x47,
+	0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31, 0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe1, 0xb1, 0x1c, 0xc3, 0x85,
+	0xc7, 0x72, 0x0c, 0x37, 0x1e, 0xcb, 0x31, 0x44, 0x19, 0xa6, 0x67, 0x96, 0x64, 0x94, 0x26, 0xe9,
+	0x25, 0xe7, 0xe7, 0xea, 0xc3, 0x8c, 0xd6, 0x2f, 0xc9, 0x4c, 0xd6, 0x2d, 0x49, 0x4c, 0xd6, 0x05,
+	0xa5, 0x92, 0x0a, 0x7d, 0xa4, 0x14, 0x53, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06, 0x4e, 0x35, 0xc6,
+	0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x82, 0x9e, 0xf0, 0x41, 0x4b, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -162,6 +255,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateGame(ctx context.Context, in *MsgCreateGame, opts ...grpc.CallOption) (*MsgCreateGameResponse, error)
+	AcceptInvite(ctx context.Context, in *MsgAcceptInvite, opts ...grpc.CallOption) (*MsgAcceptInviteResponse, error)
 }
 
 type msgClient struct {
@@ -181,9 +275,19 @@ func (c *msgClient) CreateGame(ctx context.Context, in *MsgCreateGame, opts ...g
 	return out, nil
 }
 
+func (c *msgClient) AcceptInvite(ctx context.Context, in *MsgAcceptInvite, opts ...grpc.CallOption) (*MsgAcceptInviteResponse, error) {
+	out := new(MsgAcceptInviteResponse)
+	err := c.cc.Invoke(ctx, "/shifty11.tictactoe.tictactoe.Msg/AcceptInvite", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateGame(context.Context, *MsgCreateGame) (*MsgCreateGameResponse, error)
+	AcceptInvite(context.Context, *MsgAcceptInvite) (*MsgAcceptInviteResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -192,6 +296,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) CreateGame(ctx context.Context, req *MsgCreateGame) (*MsgCreateGameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateGame not implemented")
+}
+func (*UnimplementedMsgServer) AcceptInvite(ctx context.Context, req *MsgAcceptInvite) (*MsgAcceptInviteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptInvite not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -216,6 +323,24 @@ func _Msg_CreateGame_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_AcceptInvite_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAcceptInvite)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AcceptInvite(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/shifty11.tictactoe.tictactoe.Msg/AcceptInvite",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AcceptInvite(ctx, req.(*MsgAcceptInvite))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "shifty11.tictactoe.tictactoe.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -223,6 +348,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateGame",
 			Handler:    _Msg_CreateGame_Handler,
+		},
+		{
+			MethodName: "AcceptInvite",
+			Handler:    _Msg_AcceptInvite_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -286,13 +415,69 @@ func (m *MsgCreateGameResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.GameId) > 0 {
-		i -= len(m.GameId)
-		copy(dAtA[i:], m.GameId)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.GameId)))
+	if m.GameId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.GameId))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgAcceptInvite) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAcceptInvite) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAcceptInvite) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.GameId != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.GameId))
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
 		i--
 		dAtA[i] = 0xa
 	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgAcceptInviteResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgAcceptInviteResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgAcceptInviteResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
 	return len(dAtA) - i, nil
 }
 
@@ -330,10 +515,34 @@ func (m *MsgCreateGameResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.GameId)
+	if m.GameId != 0 {
+		n += 1 + sovTx(uint64(m.GameId))
+	}
+	return n
+}
+
+func (m *MsgAcceptInvite) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	if m.GameId != 0 {
+		n += 1 + sovTx(uint64(m.GameId))
+	}
+	return n
+}
+
+func (m *MsgAcceptInviteResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	return n
 }
 
@@ -487,8 +696,77 @@ func (m *MsgCreateGameResponse) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field GameId", wireType)
+			}
+			m.GameId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.GameId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAcceptInvite) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAcceptInvite: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAcceptInvite: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -516,8 +794,77 @@ func (m *MsgCreateGameResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.GameId = string(dAtA[iNdEx:postIndex])
+			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field GameId", wireType)
+			}
+			m.GameId = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.GameId |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgAcceptInviteResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgAcceptInviteResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgAcceptInviteResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

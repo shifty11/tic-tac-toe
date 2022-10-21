@@ -8,21 +8,31 @@ import (
 	"testing"
 )
 
-const (
-	alice = "cosmos1jmjfq0tplp9tmx4v9uemw72y4d2wa5nr3xn9d3"
-	bob   = "cosmos1xyxs3skf3f4jfqeuv89yyaqvjc6lffavxqhc8g"
-)
-
 func TestCreateGame(t *testing.T) {
-	msgServer, context := setupMsgServer(t)
+	msgServer, keeper, context := setupMsgServer(t)
 	createResponse, err := msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: alice,
 		Player2: bob,
 	})
 	require.Nil(t, err)
 	require.EqualValues(t, types.MsgCreateGameResponse{
-		GameId: "1",
+		GameId: 1,
 	}, *createResponse)
+
+	game, found := keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
+	require.True(t, found)
+	require.EqualValues(t, types.StoredGame{
+		Index:   "1",
+		Player1: bob,
+		Player2: alice,
+		Turn:    1,
+		Status:  types.StoredGame_OPEN,
+		Winner:  types.StoredGame_NONE,
+		Board:   ".........",
+	}, game)
+	systemInfo, found := keeper.GetSystemInfo(sdk.UnwrapSDKContext(context))
+	require.True(t, found)
+	require.EqualValues(t, types.SystemInfo{NextGameId: 2}, systemInfo)
 
 	ctx := sdk.UnwrapSDKContext(context)
 	events := sdk.StringifyEvents(ctx.EventManager().ABCIEvents())
@@ -36,11 +46,55 @@ func TestCreateGame(t *testing.T) {
 }
 
 func TestCreateGameWrongPlayerAddress(t *testing.T) {
-	msgServer, context := setupMsgServer(t)
+	msgServer, _, context := setupMsgServer(t)
 	createResponse, err := msgServer.CreateGame(context, &types.MsgCreateGame{
 		Creator: alice,
 		Player2: "wrong address",
 	})
 	require.Error(t, err)
 	require.Nil(t, createResponse)
+}
+
+func TestCreate2Games(t *testing.T) {
+	msgServer, keeper, context := setupMsgServer(t)
+	createResponse, err := msgServer.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Player2: bob,
+	})
+	require.Nil(t, err)
+	require.EqualValues(t, types.MsgCreateGameResponse{
+		GameId: 1,
+	}, *createResponse)
+
+	expectedGame := types.StoredGame{
+		Index:   "1",
+		Player1: bob,
+		Player2: alice,
+		Turn:    1,
+		Status:  types.StoredGame_OPEN,
+		Winner:  types.StoredGame_NONE,
+		Board:   ".........",
+	}
+	game, found := keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
+	require.True(t, found)
+	require.EqualValues(t, expectedGame, game)
+	systemInfo, found := keeper.GetSystemInfo(sdk.UnwrapSDKContext(context))
+	require.True(t, found)
+	require.EqualValues(t, types.SystemInfo{NextGameId: 2}, systemInfo)
+
+	createResponse, err = msgServer.CreateGame(context, &types.MsgCreateGame{
+		Creator: alice,
+		Player2: bob,
+	})
+	require.Nil(t, err)
+	require.EqualValues(t, types.MsgCreateGameResponse{
+		GameId: 2,
+	}, *createResponse)
+
+	game, found = keeper.GetStoredGame(sdk.UnwrapSDKContext(context), "1")
+	require.True(t, found)
+	require.EqualValues(t, expectedGame, game)
+	systemInfo, found = keeper.GetSystemInfo(sdk.UnwrapSDKContext(context))
+	require.True(t, found)
+	require.EqualValues(t, types.SystemInfo{NextGameId: 3}, systemInfo)
 }
